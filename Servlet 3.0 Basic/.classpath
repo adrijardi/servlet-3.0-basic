@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry sourcepath="/Users/adri/.gradle/cache/org.glassfish/javax.servlet/sources/javax.servlet-3.0-sources.jar" kind="lib" path="/Users/adri/.gradle/cache/org.glassfish/javax.servlet/jars/javax.servlet-3.0.jar" exported="true"/>
+</classpath>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h3>Introduction</h3>
+<p>With the release of Tomcat 7, Java web application developers have an alternative to GlassFish 3 for 
+testing and running 
+web applications that use the new Servlet 3.0 specification that is part of Jave EE 6.  Oracle provides a good
+<a href="http://download.oracle.com/javaee/6/tutorial/doc/docinfo.html" target="_blank">online tutorial</a> for 
+learning about Java EE 6 and Servlet 3.0.  However, the tutorial's example applications are 
+geared toward either using NetBeans or Ant and the GlassFish 3 server.  Since I use Maven and Tomcat, I wanted 
+to try out the Servlet 3.0 example application in Tomcat 7.  This article provides a Maven version of the mood
+example application that is part of the Servlet 3 tutorial that can be packaged and deployed to the Tomcat 7 
+Servlet/JSP container.</p>
+
+<h3>Get Tomcat 7</h3>
+<p>Visit <a href="http://tomcat.apache.org" target="_blank">http://tomcat.apache.org</a> to get the latest version
+of Tomcat 7.  The documentation provides instructions on how to install Tomcat on various operating systems.</p>
+<p>Tomcat 7 provides support for the Servlet 3.0 and JavaServer Pages 2.2 specifications.  The Tomcat 7 documentation
+includes links to the APIs for Servlet 3.0 and JSP 2.2.</p>
+
+<h3>Servlet 3.0 Tutorial</h3>
+<p>Visit <a href="http://download.oracle.com/javaee/6/tutorial/doc/bnafd.html" target="_blank">Oracle's Servlet 3.0 tutorial</a>,
+where you can learn about what's new in 3.0.  As part of that tutorial, 
+<a href="http://download.oracle.com/javaee/6/tutorial/doc/giqwr.html" target="_blank">Oracle provides an example 
+application</a> named mood.  As 
+best I can tell, Oracle wants you to first get the GlassFish 3 server and then use its update tool to get the
+example applications.  You can then open the examples in NetBeans and run them in GlassFish (there is also an Ant 
+build script).</p>
+<p>That's quite a bit of work just to test running a Serlvet 3.0 example, so with the release of Tomcat 7, I 
+thought I'd create a Maven version of the mood project that could be packaged into a war file and deployed to
+Tomcat 7.</p>
+<h3>Mood Servlet 3.0 Example Application</h3>
+<p>The mood Servlet 3.0 example application is copyrighted by Oracle with a license that allows redistribution (see 
+<a href="http://developer.sun.com/berkeley_license.html" target="_blank">http://developer.sun.com/berkeley_license.html</a>).
+So I created a Maven version of the mood project that can be built using Maven and easily imported into other Java IDEs 
+such as Eclipse. You can <a href="http://www.brucephillips.name/jee6/mood.zip">download the mood example project--maven version</a>.</p>
+<p>After downloading mood.zip, unzip it and import it into any Java IDE that supports Maven.</p>
+
+<p>If you examine the pom.xml you'll see on artifact dependency for the javax.servlet-3.0.jar.  Though this Jar is provided
+by Tomcat 7, I needed it in my project's class path for compiling the source code (note the dependency's scope is "provided").</p>
+
+<h3>How To Configure Maven To Handle A Missing web.xml</h3>
+<p>The Servlet 3.0 specification
+makes web.xml optional since much of the configuration that used to be in web.xml can now be handled via annotations.  
+However, Maven's (I'm using 3.0.2 version) package phase will error if there is no web.xml file found under WEB-INF.
+To avoid this error include the following plugin in the build section of your project's pom.xml</p>
+<code>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+</code>
+<h3>Build, Deploy, and Run The Mood Servlet 3.0 Example Application</h3>
+<p>After unzipping the downloaded mood example project, open a terminal (command) window and navigate to the project's
+root folder (where pom.xml is).  Enter mvn -e clean and then mvn -e package to create the war file.</p>
+<p>Change to the target folder and copy the mood.war file to your Tomcat 7 installation webapps folder.  Startup Tomcat 7.
+Then open a web browser and go to http://localhost:8080/mood/greeting.</p>
+<p>If you don't get a web page with an image of Duke and a greeting message, then open console.out in your 
+Tomcat 7 installation logs folder and review it for any error messages that might indicate the reason.</p>
+
+<h3>Summary</h3>
+<p>The release of Apache's Tomcat 7 Servlet/JSP container give Java web developers
+an alternative to using GlassFish 3 for testing/running web applications that use Servlet 3.0.  
+If you're used to using Maven and Tomcat together in your Java web 
+development then understanding how to "Mavenize" the Servlet 3.0 examples provided by Oracle might be helpful.</p>
+<p>One note--if you want to explore using JavaServer Faces (JSF) 2.0 with Tomcat 7, you'll need to copy the JSF 2 
+jar files into your Tomcat 7 installation lib folder.  Unlike GlassFish 3, Tomcat 7 doesn't come with built-in
+support for JSF 2.</p>
+
+<h3>References</h3>
+<ol>
+<li><a href="http://www.brucephillips.name/jee6/mood.zip">Maven Version Of Servlet 3.0 Mood Example</a></li>
+<li><a href="http://download.oracle.com/javaee/6/tutorial/doc/docinfo.html" target="_blank">The Java EE 6 Tutorial</a></li>
+<li><a href="http://tomcat.apache.org/tomcat-7.0-doc/index.html" target="_blank">Tomcat 7 Documentation</a></li>
+
+</ol>
+
+</body>
+</html>

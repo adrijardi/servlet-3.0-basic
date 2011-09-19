@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+sourceCompatibility = 1.6
+
+repositories {
+	mavenRepo urls: 'http://download.java.net/maven/glassfish'
+	mavenCentral()
+}
+
+dependencies {
+	providedCompile group: 'org.glassfish', name: 'javax.servlet', version: '3.0'
+}
+
+war.baseName = 'servlet'
+
+task deployToTomcat(dependsOn: 'war') << {
+	copy {
+		from war.archivePath
+		into "/Users/adri/apache-tomcat-7.0.21/webapps/"
+	}
+}
